@@ -231,6 +231,9 @@ FilterPropagateResult CheckSketchTemplated(const BaseStatistics &stats, Expressi
 										   const std::vector<std::shared_ptr<BaseColumnSketch>> &segment_sketches,
 										   std::vector<ManagedSelection> &vector_sels) {
 	D_ASSERT(!segment_sketches.empty());
+	if (index >= segment_sketches.size() || index >= vector_sels.size()) {
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
 	using SignedT = std::make_signed_t<T>;							
 	SignedT signed_val = constant_value.GetValueUnsafe<SignedT>();
 	T constant = static_cast<T>(signed_val);	
@@ -371,6 +374,156 @@ FilterPropagateResult NumericStats::CheckSketch(const BaseStatistics &stats, Exp
 		return CheckSketchTemplated<uint64_t>(stats, comparison_type, constant, index, segment_sketches, vector_sels);
 	default:
 	throw InternalException("Unsupported type for NumericStats::CheckSketch");
+	}
+}
+
+// ---------------------------------------------------------------------------
+// CUBIT evaluation
+// ---------------------------------------------------------------------------
+template <class T>
+static FilterPropagateResult CheckCubitTemplated(const BaseStatistics &stats, ExpressionType comparison_type,
+                                                  const Value &constant_value, idx_t index,
+                                                  std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+                                                  std::vector<ManagedSelection> &cubit_vector_sels) {
+	D_ASSERT(!cubit_indices.empty());
+	if (index >= cubit_indices.size() || index >= cubit_vector_sels.size()) {
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
+	using SignedT = std::make_signed_t<T>;
+	SignedT signed_val = constant_value.GetValueUnsafe<SignedT>();
+	T constant = static_cast<T>(signed_val);
+
+	auto *wrapper = dynamic_cast<CubitBinIndexWrapper<T>*>(cubit_indices[index].get());
+	ManagedSelection &sel = cubit_vector_sels[index];
+
+	if (!wrapper) {
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
+
+	idx_t n_rows = static_cast<idx_t>(wrapper->impl.GetNRows());
+	idx_t result = 0;
+
+	switch (comparison_type) {
+	case ExpressionType::COMPARE_LESSTHAN:
+		result = wrapper->impl.evaluate_less_than(constant, sel);
+		break;
+	case ExpressionType::COMPARE_LESSTHANOREQUALTO:
+		result = wrapper->impl.evaluate_lessthan_orequal(constant, sel);
+		break;
+	case ExpressionType::COMPARE_GREATERTHAN:
+		result = wrapper->impl.evaluate_greater_than(constant, sel);
+		break;
+	case ExpressionType::COMPARE_GREATERTHANOREQUALTO:
+		result = wrapper->impl.evaluate_greaterthan_orequal(constant, sel);
+		break;
+	case ExpressionType::COMPARE_EQUAL:
+	case ExpressionType::COMPARE_NOTEQUAL:
+		// Fall through to non-bitmap path for equality
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	default:
+		throw InternalException("Expression type in CUBIT check not implemented");
+	}
+
+	if (result == 0) {
+		return FilterPropagateResult::FILTER_ALWAYS_FALSE;
+	} else if (result == n_rows) {
+		return FilterPropagateResult::FILTER_ALWAYS_TRUE;
+	} else {
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
+}
+
+FilterPropagateResult NumericStats::CheckCubit(const BaseStatistics &stats, ExpressionType comparison_type,
+                                                const Value &constant, idx_t index,
+                                                std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+                                                std::vector<ManagedSelection> &cubit_vector_sels) {
+	D_ASSERT(constant.type() == stats.GetType());
+	if (constant.IsNull()) {
+		return FilterPropagateResult::FILTER_ALWAYS_FALSE;
+	}
+
+	switch (stats.GetType().InternalType()) {
+	case PhysicalType::INT32:
+	case PhysicalType::UINT32:
+		return CheckCubitTemplated<uint32_t>(stats, comparison_type, constant, index, cubit_indices, cubit_vector_sels);
+	case PhysicalType::INT64:
+	case PhysicalType::UINT64:
+		return CheckCubitTemplated<uint64_t>(stats, comparison_type, constant, index, cubit_indices, cubit_vector_sels);
+	default:
+		throw InternalException("Unsupported type for NumericStats::CheckCubit");
+	}
+}
+
+template<typename T>
+static FilterPropagateResult CheckRabitTemplated(const BaseStatistics &stats, ExpressionType comparison_type,
+                                                  const Value &constant_value, idx_t index,
+                                                  std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+                                                  std::vector<ManagedSelection> &rabit_vector_sels) {
+	D_ASSERT(!rabit_indices.empty());
+	if (index >= rabit_indices.size() || index >= rabit_vector_sels.size()) {
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
+	using SignedT = std::make_signed_t<T>;
+	SignedT signed_val = constant_value.GetValueUnsafe<SignedT>();
+	T constant = static_cast<T>(signed_val);
+
+	auto *wrapper = dynamic_cast<RabitBinIndexWrapper<T>*>(rabit_indices[index].get());
+	ManagedSelection &sel = rabit_vector_sels[index];
+
+	if (!wrapper) {
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
+
+	idx_t n_rows = static_cast<idx_t>(wrapper->impl.GetNRows());
+	idx_t result = 0;
+
+	switch (comparison_type) {
+	case ExpressionType::COMPARE_LESSTHAN:
+		result = wrapper->impl.evaluate_less_than(constant, sel);
+		break;
+	case ExpressionType::COMPARE_LESSTHANOREQUALTO:
+		result = wrapper->impl.evaluate_lessthan_orequal(constant, sel);
+		break;
+	case ExpressionType::COMPARE_GREATERTHAN:
+		result = wrapper->impl.evaluate_greater_than(constant, sel);
+		break;
+	case ExpressionType::COMPARE_GREATERTHANOREQUALTO:
+		result = wrapper->impl.evaluate_greaterthan_orequal(constant, sel);
+		break;
+	case ExpressionType::COMPARE_EQUAL:
+	case ExpressionType::COMPARE_NOTEQUAL:
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	default:
+		throw InternalException("Expression type in RABIT check not implemented");
+	}
+
+	if (result == 0) {
+		return FilterPropagateResult::FILTER_ALWAYS_FALSE;
+	} else if (result == n_rows) {
+		return FilterPropagateResult::FILTER_ALWAYS_TRUE;
+	} else {
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
+}
+
+FilterPropagateResult NumericStats::CheckRabit(const BaseStatistics &stats, ExpressionType comparison_type,
+                                                const Value &constant, idx_t index,
+                                                std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+                                                std::vector<ManagedSelection> &rabit_vector_sels) {
+	D_ASSERT(constant.type() == stats.GetType());
+	if (constant.IsNull()) {
+		return FilterPropagateResult::FILTER_ALWAYS_FALSE;
+	}
+
+	switch (stats.GetType().InternalType()) {
+	case PhysicalType::INT32:
+	case PhysicalType::UINT32:
+		return CheckRabitTemplated<uint32_t>(stats, comparison_type, constant, index, rabit_indices, rabit_vector_sels);
+	case PhysicalType::INT64:
+	case PhysicalType::UINT64:
+		return CheckRabitTemplated<uint64_t>(stats, comparison_type, constant, index, rabit_indices, rabit_vector_sels);
+	default:
+		throw InternalException("Unsupported type for NumericStats::CheckRabit");
 	}
 }
 

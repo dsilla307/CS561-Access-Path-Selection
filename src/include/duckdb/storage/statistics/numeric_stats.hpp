@@ -14,6 +14,8 @@
 #include "duckdb/common/operator/comparison_operators.hpp"
 #include "duckdb/common/types/value.hpp"
 #include "duckdb/storage/statistics/column_sketch.hpp"
+#include "duckdb/storage/statistics/cubit_index.hpp"
+#include "duckdb/storage/statistics/rabit_index.hpp"
 #include "duckdb/common/types/selection_vector.hpp"
 
 namespace duckdb {
@@ -63,6 +65,16 @@ struct NumericStats {
 	                                                    const Value &constant, idx_t index,
 														std::vector<std::shared_ptr<BaseColumnSketch>> &segment_sketches,
 														std::vector<ManagedSelection> &vector_sels);
+
+	DUCKDB_API static FilterPropagateResult CheckCubit(const BaseStatistics &stats, ExpressionType comparison_type,
+	                                                    const Value &constant, idx_t index,
+														std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+														std::vector<ManagedSelection> &cubit_vector_sels);
+
+	DUCKDB_API static FilterPropagateResult CheckRabit(const BaseStatistics &stats, ExpressionType comparison_type,
+	                                                    const Value &constant, idx_t index,
+														std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+														std::vector<ManagedSelection> &rabit_vector_sels);
 
 	DUCKDB_API static void Merge(BaseStatistics &stats, const BaseStatistics &other_p);
 

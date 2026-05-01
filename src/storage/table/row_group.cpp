@@ -466,12 +466,6 @@ bool RowGroup::CheckSketchSegments(CollectionScanState &state) {
 			D_ASSERT(target_row <= this->start + this->count);
 			idx_t target_vector_index = (target_row - this->start) / STANDARD_VECTOR_SIZE;
 			if (state.vector_index == target_vector_index) {
-				// we can't skip any full vectors because this segment contains less than a full vector
-				// for now we just bail-out
-				// FIXME: we could check if we can ALSO skip the next segments, in which case skipping a full vector
-				// might be possible
-				// we don't care that much though, since a single segment that fits less than a full vector is
-				// exceedingly rare
 				return true;
 			}
 			if (state.vector_index < target_vector_index) {
@@ -484,6 +478,68 @@ bool RowGroup::CheckSketchSegments(CollectionScanState &state) {
 	return true;
 }
 
+bool RowGroup::CheckCubitSegments(CollectionScanState &state) {
+	auto &column_ids = state.GetColumnIds();
+	auto filters = state.GetFilters();
+	if (!filters) {
+		return true;
+	}
+	for (auto &entry : filters->filters) {
+		D_ASSERT(entry.first < column_ids.size());
+		auto column_idx = entry.first;
+		const auto &base_column_idx = column_ids[column_idx];
+		bool read_segment = GetColumn(base_column_idx).CheckCubit(state.column_scans[column_idx], *entry.second, state.vector_index);
+		if (!read_segment) {
+			idx_t target_row = GetFilterScanCount(state.column_scans[column_idx], *entry.second);
+			if (target_row >= state.max_row) {
+				target_row = state.max_row;
+			}
+			D_ASSERT(target_row >= this->start);
+			D_ASSERT(target_row <= this->start + this->count);
+			idx_t target_vector_index = (target_row - this->start) / STANDARD_VECTOR_SIZE;
+			if (state.vector_index == target_vector_index) {
+				return true;
+			}
+			if (state.vector_index < target_vector_index) {
+				NextVector(state);
+			}
+			return false;
+		}
+	}
+	return true;
+}
+
+
+bool RowGroup::CheckRabitSegments(CollectionScanState &state) {
+	auto &column_ids = state.GetColumnIds();
+	auto filters = state.GetFilters();
+	if (!filters) {
+		return true;
+	}
+	for (auto &entry : filters->filters) {
+		D_ASSERT(entry.first < column_ids.size());
+		auto column_idx = entry.first;
+		const auto &base_column_idx = column_ids[column_idx];
+		bool read_segment = GetColumn(base_column_idx).CheckRabit(state.column_scans[column_idx], *entry.second, state.vector_index);
+		if (!read_segment) {
+			idx_t target_row = GetFilterScanCount(state.column_scans[column_idx], *entry.second);
+			if (target_row >= state.max_row) {
+				target_row = state.max_row;
+			}
+			D_ASSERT(target_row >= this->start);
+			D_ASSERT(target_row <= this->start + this->count);
+			idx_t target_vector_index = (target_row - this->start) / STANDARD_VECTOR_SIZE;
+			if (state.vector_index == target_vector_index) {
+				return true;
+			}
+			if (state.vector_index < target_vector_index) {
+				NextVector(state);
+			}
+			return false;
+		}
+	}
+	return true;
+}
 
 template <TableScanType TYPE>
 void RowGroup::TemplatedScan(TransactionData transaction, CollectionScanState &state, DataChunk &result) {
@@ -501,17 +557,34 @@ void RowGroup::TemplatedScan(TransactionData transaction, CollectionScanState &s
 		auto max_count = MinValue<idx_t>(STANDARD_VECTOR_SIZE, state.max_row_group_row - current_row);
 
 		bool can_sketch = true;
+		bool can_cubit = true;
+		bool can_rabit = true;
 		//! first check the zonemap if we have to scan this partition
 		for (idx_t i = 0; i < column_ids.size(); i++) {
 			const auto &column = column_ids[i];
+			if (column == COLUMN_IDENTIFIER_ROW_ID) {
+				can_sketch = false;
+				can_cubit = false;
+				can_rabit = false;
+				break;
+			}
 			auto &col_data = GetColumn(column);
 			if(!col_data.is_sketched) {
 				can_sketch = false;
-				break;
+			}
+			if(!col_data.is_cubit) {
+				can_cubit = false;
+			}
+			if(!col_data.is_rabit) {
+				can_rabit = false;
 			}
 		}
 		bool check_result;
-		if (can_sketch) 
+		if (can_rabit)
+			check_result = CheckRabitSegments(state);
+		else if (can_cubit)
+			check_result = CheckCubitSegments(state);
+		else if (can_sketch) 
 			check_result = CheckSketchSegments(state);
 		else
 			check_result = CheckZonemapSegments(state);
@@ -578,7 +651,69 @@ void RowGroup::TemplatedScan(TransactionData transaction, CollectionScanState &s
 					auto tf_idx = adaptive_filter->permutation[i];
 					auto col_idx = column_ids[tf_idx];
 					auto &col_data = GetColumn(col_idx);
-					if(can_sketch) {
+					if(can_rabit) {
+						if (state.vector_index >= col_data.rabit_vector_sels.size()) {
+							can_rabit = false;
+							col_data.Select(transaction, state.vector_index, state.column_scans[tf_idx], result.data[tf_idx],
+								sel, approved_tuple_count, *table_filters->filters[tf_idx]);
+							continue;
+						}
+						col_data.Scan(transaction, state.vector_index, state.column_scans[tf_idx], result.data[tf_idx]);
+						if(i == 0){
+							msel.bitmask = col_data.rabit_vector_sels[state.vector_index].bitmask;
+						}
+						else {
+							auto &other_mask = col_data.rabit_vector_sels[state.vector_index].bitmask;
+							for (size_t j = 0; j < msel.bitmask.size(); ++j) {
+								msel.bitmask[j] &= other_mask[j];
+							}
+						}
+						if (i == table_filters->filters.size() - 1) {
+							if(i == 0){
+								sel.Initialize(col_data.rabit_vector_sels[state.vector_index].Selection());
+								approved_tuple_count = col_data.rabit_vector_sels[state.vector_index].Count();
+							}
+							else {
+								msel.BitmaskToSelection();
+								sel.Initialize(msel.Selection());
+								approved_tuple_count = msel.Count();
+							}
+						}
+					} else if(can_cubit) {
+						if (state.vector_index >= col_data.cubit_vector_sels.size()) {
+							can_cubit = false;
+							col_data.Select(transaction, state.vector_index, state.column_scans[tf_idx], result.data[tf_idx],
+								sel, approved_tuple_count, *table_filters->filters[tf_idx]);
+							continue;
+						}
+						col_data.Scan(transaction, state.vector_index, state.column_scans[tf_idx], result.data[tf_idx]);
+						if(i == 0){
+							msel.bitmask = col_data.cubit_vector_sels[state.vector_index].bitmask;
+						}
+						else {
+							auto &other_mask = col_data.cubit_vector_sels[state.vector_index].bitmask;
+							for (size_t j = 0; j < msel.bitmask.size(); ++j) {
+								msel.bitmask[j] &= other_mask[j];
+							}
+						}
+						if (i == table_filters->filters.size() - 1) {
+							if(i == 0){
+								sel.Initialize(col_data.cubit_vector_sels[state.vector_index].Selection());
+								approved_tuple_count = col_data.cubit_vector_sels[state.vector_index].Count();
+							}
+							else {
+								msel.BitmaskToSelection();
+								sel.Initialize(msel.Selection());
+								approved_tuple_count = msel.Count();
+							}
+						}
+					} else if(can_sketch) {
+						if (state.vector_index >= col_data.vector_sels.size()) {
+							can_sketch = false;
+							col_data.Select(transaction, state.vector_index, state.column_scans[tf_idx], result.data[tf_idx],
+								sel, approved_tuple_count, *table_filters->filters[tf_idx]);
+							continue;
+						}
 						col_data.Scan(transaction, state.vector_index, state.column_scans[tf_idx], result.data[tf_idx]);
 						if(i == 0){
 							msel.bitmask = col_data.vector_sels[state.vector_index].bitmask;
@@ -887,6 +1022,122 @@ void RowGroup::sketchAppend(RowGroupAppendState &state, DataChunk &chunk, idx_t 
 			}
 		}
 		
+
+		allocation_size += col_data.GetAllocationSize() - prev_allocation_size;
+	}
+	state.offset_in_row_group += append_count;
+}
+
+void RowGroup::cubitAppend(RowGroupAppendState &state, DataChunk &chunk, idx_t append_count, vector<int> &cubit_col_idxs) {
+	D_ASSERT(chunk.ColumnCount() == GetColumnCount());
+	int cubit_idx = 0;
+	for (idx_t i = 0; i < GetColumnCount(); i++) {
+		auto &col_data = GetColumn(i);
+		auto prev_allocation_size = col_data.GetAllocationSize();
+		col_data.Append(state.states[i], chunk.data[i], append_count);
+
+		D_ASSERT(cubit_col_idxs.size() > 0);
+		if (cubit_idx < static_cast<int>(cubit_col_idxs.size()) && static_cast<int>(i) == cubit_col_idxs[cubit_idx]) {
+			cubit_idx++;
+			UnifiedVectorFormat data;
+			chunk.data[i].ToUnifiedFormat(append_count, data);
+			switch (col_data.type.InternalType()) {
+				case PhysicalType::INT32:
+				case PhysicalType::UINT32: {
+					auto sdata = UnifiedVectorFormat::GetData<int32_t>(data);
+					std::vector<uint32_t> all_data;
+					all_data.reserve(append_count);
+					for (idx_t j = 0; j < append_count; ++j) {
+						all_data.push_back(static_cast<uint32_t>(sdata[j]));
+					}
+					auto cubit = std::make_shared<CubitBinIndexWrapper<uint32_t>>(all_data);
+					col_data.cubit_indices.push_back(cubit->Copy());
+					ManagedSelection msel(append_count);
+					msel.Selection().Initialize(nullptr);
+					msel.SetCount(append_count);
+					col_data.cubit_vector_sels.push_back(msel);
+					col_data.is_cubit = true;
+					break;
+				}
+				case PhysicalType::INT64:
+				case PhysicalType::UINT64: {
+					auto sdata = UnifiedVectorFormat::GetData<int64_t>(data);
+					std::vector<uint64_t> all_data;
+					all_data.reserve(append_count);
+					for (idx_t j = 0; j < append_count; ++j) {
+						all_data.push_back(static_cast<uint64_t>(sdata[j]));
+					}
+					auto cubit = std::make_shared<CubitBinIndexWrapper<uint64_t>>(all_data);
+					col_data.cubit_indices.push_back(cubit->Copy());
+					ManagedSelection msel(append_count);
+					msel.Selection().Initialize(nullptr);
+					msel.SetCount(append_count);
+					col_data.cubit_vector_sels.push_back(msel);
+					col_data.is_cubit = true;
+					break;
+				}
+				default:
+					break;
+			}
+		}
+
+		allocation_size += col_data.GetAllocationSize() - prev_allocation_size;
+	}
+	state.offset_in_row_group += append_count;
+}
+
+void RowGroup::rabitAppend(RowGroupAppendState &state, DataChunk &chunk, idx_t append_count, vector<int> &rabit_col_idxs) {
+	D_ASSERT(chunk.ColumnCount() == GetColumnCount());
+	int rabit_idx = 0;
+	for (idx_t i = 0; i < GetColumnCount(); i++) {
+		auto &col_data = GetColumn(i);
+		auto prev_allocation_size = col_data.GetAllocationSize();
+		col_data.Append(state.states[i], chunk.data[i], append_count);
+
+		D_ASSERT(rabit_col_idxs.size() > 0);
+		if (rabit_idx < static_cast<int>(rabit_col_idxs.size()) && static_cast<int>(i) == rabit_col_idxs[rabit_idx]) {
+			rabit_idx++;
+			UnifiedVectorFormat data;
+			chunk.data[i].ToUnifiedFormat(append_count, data);
+			switch (col_data.type.InternalType()) {
+				case PhysicalType::INT32:
+				case PhysicalType::UINT32: {
+					auto sdata = UnifiedVectorFormat::GetData<int32_t>(data);
+					std::vector<uint32_t> all_data;
+					all_data.reserve(append_count);
+					for (idx_t j = 0; j < append_count; ++j) {
+						all_data.push_back(static_cast<uint32_t>(sdata[j]));
+					}
+					auto rabit = std::make_shared<RabitBinIndexWrapper<uint32_t>>(all_data);
+					col_data.rabit_indices.push_back(rabit->Copy());
+					ManagedSelection msel(append_count);
+					msel.Selection().Initialize(nullptr);
+					msel.SetCount(append_count);
+					col_data.rabit_vector_sels.push_back(msel);
+					col_data.is_rabit = true;
+					break;
+				}
+				case PhysicalType::INT64:
+				case PhysicalType::UINT64: {
+					auto sdata = UnifiedVectorFormat::GetData<int64_t>(data);
+					std::vector<uint64_t> all_data;
+					all_data.reserve(append_count);
+					for (idx_t j = 0; j < append_count; ++j) {
+						all_data.push_back(static_cast<uint64_t>(sdata[j]));
+					}
+					auto rabit = std::make_shared<RabitBinIndexWrapper<uint64_t>>(all_data);
+					col_data.rabit_indices.push_back(rabit->Copy());
+					ManagedSelection msel(append_count);
+					msel.Selection().Initialize(nullptr);
+					msel.SetCount(append_count);
+					col_data.rabit_vector_sels.push_back(msel);
+					col_data.is_rabit = true;
+					break;
+				}
+				default:
+					break;
+			}
+		}
 
 		allocation_size += col_data.GetAllocationSize() - prev_allocation_size;
 	}

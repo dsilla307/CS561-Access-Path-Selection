@@ -21,6 +21,8 @@ public:
 public:
 	bool CheckZonemap(ColumnScanState &state, TableFilter &filter) override;
 	bool CheckSketch(ColumnScanState &state, TableFilter &filter, idx_t index) override;
+	bool CheckCubit(ColumnScanState &state, TableFilter &filter, idx_t index) override;
+	bool CheckRabit(ColumnScanState &state, TableFilter &filter, idx_t index) override;
 	
 	void AppendData(BaseStatistics &stats, ColumnAppendState &state, UnifiedVectorFormat &vdata, idx_t count) override;
 };

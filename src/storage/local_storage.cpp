@@ -1,6 +1,8 @@
 #include "duckdb/transaction/local_storage.hpp"
 #include "duckdb/execution/index/art/art.hpp"
 #include "duckdb/storage/table/append_state.hpp"
+#include <cstdlib>
+#include <string>
 #include "duckdb/storage/write_ahead_log.hpp"
 #include "duckdb/common/vector_operations/vector_operations.hpp"
 #include "duckdb/storage/table/row_group.hpp"
@@ -363,12 +365,33 @@ void LocalStorage::Append(LocalAppendState &state, DataChunk &chunk) {
 		error.Throw();
 	}
 	vector<int> cached_sketch_col_idxs;
+	vector<int> cached_cubit_col_idxs;
+	vector<int> cached_rabit_col_idxs;
 	auto info = storage->table_ref.get().GetDataTableInfo();
 	if (info->GetTableName() == "lineitem") {
 		cached_sketch_col_idxs = {4, 5, 6, 7, 10};
+		cached_cubit_col_idxs = {4, 5, 6, 7, 10};
+		cached_rabit_col_idxs = {4, 5, 6, 7, 10};
+	} else if (info->GetTableName() == "synth") {
+		cached_sketch_col_idxs = {0};
+		cached_cubit_col_idxs = {0};
+		cached_rabit_col_idxs = {0};
 	}
-	//! Append the chunk to the local storage
-	auto new_row_group = storage->row_groups->sketchAppend(chunk, state.append_state, cached_sketch_col_idxs);
+	//! Select index path based on DUCKDB_SCAN_METHOD env var (plain / sketch / cubit / rabit)
+	const char *scan_method_env = std::getenv("DUCKDB_SCAN_METHOD");
+	std::string scan_method = scan_method_env ? scan_method_env : "cubit";
+	bool new_row_group;
+	if (scan_method == "sketch") {
+		new_row_group = storage->row_groups->sketchAppend(chunk, state.append_state, cached_sketch_col_idxs);
+	} else if (scan_method == "plain") {
+		vector<int> empty_idxs;
+		new_row_group = storage->row_groups->cubitAppend(chunk, state.append_state, empty_idxs);
+	} else if (scan_method == "rabit") {
+		new_row_group = storage->row_groups->rabitAppend(chunk, state.append_state, cached_rabit_col_idxs);
+	} else {
+		// default: cubit
+		new_row_group = storage->row_groups->cubitAppend(chunk, state.append_state, cached_cubit_col_idxs);
+	}
 	//! Check if we should pre-emptively flush blocks to disk
 	if (new_row_group) {
 		storage->WriteNewRowGroup();

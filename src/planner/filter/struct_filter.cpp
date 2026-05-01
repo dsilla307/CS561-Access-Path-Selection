@@ -26,6 +26,18 @@ FilterPropagateResult StructFilter::CheckSketchStatistics(BaseStatistics &stats,
 	return child_filter->CheckSketchStatistics(child_stats, index, segment_sketches, vector_sels);
 }
 
+FilterPropagateResult StructFilter::CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+														 std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+														 std::vector<ManagedSelection> &cubit_vector_sels) {
+	return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+}
+
+FilterPropagateResult StructFilter::CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+														 std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+														 std::vector<ManagedSelection> &rabit_vector_sels) {
+	return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+}
+
 string StructFilter::ToString(const string &column_name) {
 	return child_filter->ToString(column_name + "." + child_name);
 }

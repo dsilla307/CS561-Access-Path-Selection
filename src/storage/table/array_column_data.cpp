@@ -36,6 +36,14 @@ bool ArrayColumnData::CheckSketch(ColumnScanState &state, TableFilter &filter, i
 	return false;
 }
 
+bool ArrayColumnData::CheckCubit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	return false;
+}
+
+bool ArrayColumnData::CheckRabit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	return false;
+}
+
 void ArrayColumnData::InitializeScan(ColumnScanState &state) {
 	// initialize the validity segment
 	D_ASSERT(state.child_states.size() == 2);

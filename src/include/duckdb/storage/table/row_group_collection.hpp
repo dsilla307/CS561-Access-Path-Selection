@@ -76,6 +76,8 @@ public:
 	bool Append(DataChunk &chunk, TableAppendState &state);
 
 	bool sketchAppend(DataChunk &chunk, TableAppendState &state, vector<int> &sketch_col_idxs);
+	bool cubitAppend(DataChunk &chunk, TableAppendState &state, vector<int> &cubit_col_idxs);
+	bool rabitAppend(DataChunk &chunk, TableAppendState &state, vector<int> &rabit_col_idxs);
 
 	//! FinalizeAppend flushes an append with a variable number of rows.
 	void FinalizeAppend(TransactionData transaction, TableAppendState &state);

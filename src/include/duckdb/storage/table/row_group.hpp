@@ -107,6 +107,8 @@ public:
 	//! skipped.
 	bool CheckZonemapSegments(CollectionScanState &state);
 	bool CheckSketchSegments(CollectionScanState &state);
+	bool CheckCubitSegments(CollectionScanState &state);
+	bool CheckRabitSegments(CollectionScanState &state);
 	void Scan(TransactionData transaction, CollectionScanState &state, DataChunk &result);
 	void ScanCommitted(CollectionScanState &state, DataChunk &result, TableScanType type);
 
@@ -140,6 +142,8 @@ public:
 	void Append(RowGroupAppendState &append_state, DataChunk &chunk, idx_t append_count);
 
 	void sketchAppend(RowGroupAppendState &append_state, DataChunk &chunk, idx_t append_count, vector<int> &sketch_col_idxs);
+	void cubitAppend(RowGroupAppendState &append_state, DataChunk &chunk, idx_t append_count, vector<int> &cubit_col_idxs);
+	void rabitAppend(RowGroupAppendState &append_state, DataChunk &chunk, idx_t append_count, vector<int> &rabit_col_idxs);
 
 	void Update(TransactionData transaction, DataChunk &updates, row_t *ids, idx_t offset, idx_t count,
 	            const vector<PhysicalIndex> &column_ids);

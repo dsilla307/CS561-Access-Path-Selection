@@ -24,6 +24,12 @@ public:
 	FilterPropagateResult CheckStatistics(BaseStatistics &stats) override;
 	FilterPropagateResult CheckSketchStatistics(BaseStatistics &stats, idx_t index, std::vector<std::shared_ptr<BaseColumnSketch>> &segment_sketches,
 												std::vector<ManagedSelection> &vector_sels) override;
+	FilterPropagateResult CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+											   std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+											   std::vector<ManagedSelection> &cubit_vector_sels) override;
+	FilterPropagateResult CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+											   std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+											   std::vector<ManagedSelection> &rabit_vector_sels) override;
 	string ToString(const string &column_name) override;
 	void Serialize(Serializer &serializer) const override;
 	static unique_ptr<TableFilter> Deserialize(Deserializer &deserializer);
@@ -40,6 +46,12 @@ public:
 	FilterPropagateResult CheckStatistics(BaseStatistics &stats) override;
 	FilterPropagateResult CheckSketchStatistics(BaseStatistics &stats, idx_t index, std::vector<std::shared_ptr<BaseColumnSketch>> &segment_sketches,
 												std::vector<ManagedSelection> &vector_sels) override;
+	FilterPropagateResult CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+											   std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+											   std::vector<ManagedSelection> &cubit_vector_sels) override;
+	FilterPropagateResult CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+											   std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+											   std::vector<ManagedSelection> &rabit_vector_sels) override;
 	string ToString(const string &column_name) override;
 	void Serialize(Serializer &serializer) const override;
 	static unique_ptr<TableFilter> Deserialize(Deserializer &deserializer);

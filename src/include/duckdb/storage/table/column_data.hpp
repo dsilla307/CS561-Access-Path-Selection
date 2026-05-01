@@ -17,6 +17,8 @@
 #include "duckdb/storage/table/column_segment_tree.hpp"
 #include "duckdb/common/mutex.hpp"
 #include "duckdb/common/enums/scan_vector_type.hpp"
+#include "duckdb/storage/statistics/cubit_index.hpp"
+#include "duckdb/storage/statistics/rabit_index.hpp"
 
 namespace duckdb {
 class ColumnData;
@@ -69,9 +71,19 @@ public:
 	std::vector<std::shared_ptr<BaseColumnSketch>> segment_sketches;
 	bool is_sketched = false;
 	std::vector<ManagedSelection> vector_sels;
+
+	std::vector<std::shared_ptr<BaseCubitIndex>> cubit_indices;
+	bool is_cubit = false;
+	std::vector<ManagedSelection> cubit_vector_sels;
+
+	std::vector<std::shared_ptr<BaseRabitIndex>> rabit_indices;
+	bool is_rabit = false;
+	std::vector<ManagedSelection> rabit_vector_sels;
 public:
 	virtual bool CheckZonemap(ColumnScanState &state, TableFilter &filter) = 0;
 	virtual bool CheckSketch(ColumnScanState &state, TableFilter &filter, idx_t index) = 0;
+	virtual bool CheckCubit(ColumnScanState &state, TableFilter &filter, idx_t index) = 0;
+	virtual bool CheckRabit(ColumnScanState &state, TableFilter &filter, idx_t index) = 0;
 
 	BlockManager &GetBlockManager() {
 		return block_manager;

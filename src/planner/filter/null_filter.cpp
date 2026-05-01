@@ -32,6 +32,18 @@ FilterPropagateResult IsNullFilter::CheckSketchStatistics(BaseStatistics &stats,
 	return FilterPropagateResult::NO_PRUNING_POSSIBLE;
 }
 
+FilterPropagateResult IsNullFilter::CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+														 std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+														 std::vector<ManagedSelection> &cubit_vector_sels) {
+	return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+}
+
+FilterPropagateResult IsNullFilter::CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+														 std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+														 std::vector<ManagedSelection> &rabit_vector_sels) {
+	return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+}
+
 string IsNullFilter::ToString(const string &column_name) {
 	return column_name + "IS NULL";
 }
@@ -62,6 +74,18 @@ FilterPropagateResult IsNotNullFilter::CheckSketchStatistics(BaseStatistics &sta
 		// no null values are possible: always true
 		return FilterPropagateResult::FILTER_ALWAYS_TRUE;
 	}
+	return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+}
+
+FilterPropagateResult IsNotNullFilter::CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+															std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+															std::vector<ManagedSelection> &cubit_vector_sels) {
+	return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+}
+
+FilterPropagateResult IsNotNullFilter::CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+															std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+															std::vector<ManagedSelection> &rabit_vector_sels) {
 	return FilterPropagateResult::NO_PRUNING_POSSIBLE;
 }
 

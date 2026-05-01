@@ -65,6 +65,9 @@ bool StandardColumnData::CheckSketch(ColumnScanState &state, TableFilter &filter
 		if (!state.current) {
 			return true;
 		}
+		if (index >= segment_sketches.size() || index >= vector_sels.size()) {
+			return true;
+		}
 		FilterPropagateResult prune_result;
 		{
 			lock_guard<mutex> l(stats_lock);
@@ -76,6 +79,52 @@ bool StandardColumnData::CheckSketch(ColumnScanState &state, TableFilter &filter
 				return false;
 			}
 		}	
+	} else {
+		return true;
+	}
+}
+
+bool StandardColumnData::CheckCubit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	if (is_cubit) {
+		if (!state.current) {
+			return true;
+		}
+		if (index >= cubit_indices.size() || index >= cubit_vector_sels.size()) {
+			return true;
+		}
+		FilterPropagateResult prune_result;
+		{
+			lock_guard<mutex> l(stats_lock);
+			prune_result = filter.CheckCubitStatistics(state.current->stats.statistics, index, cubit_indices, cubit_vector_sels);
+			if (prune_result != FilterPropagateResult::FILTER_ALWAYS_FALSE) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	} else {
+		return true;
+	}
+}
+
+bool StandardColumnData::CheckRabit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	if (is_rabit) {
+		if (!state.current) {
+			return true;
+		}
+		if (index >= rabit_indices.size() || index >= rabit_vector_sels.size()) {
+			return true;
+		}
+		FilterPropagateResult prune_result;
+		{
+			lock_guard<mutex> l(stats_lock);
+			prune_result = filter.CheckRabitStatistics(state.current->stats.statistics, index, rabit_indices, rabit_vector_sels);
+			if (prune_result != FilterPropagateResult::FILTER_ALWAYS_FALSE) {
+				return true;
+			} else {
+				return false;
+			}
+		}
 	} else {
 		return true;
 	}

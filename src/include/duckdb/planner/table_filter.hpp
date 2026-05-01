@@ -13,6 +13,8 @@
 #include "duckdb/common/unordered_map.hpp"
 #include "duckdb/common/enums/filter_propagate_result.hpp"
 #include "duckdb/storage/statistics/column_sketch.hpp"
+#include "duckdb/storage/statistics/cubit_index.hpp"
+#include "duckdb/storage/statistics/rabit_index.hpp"
 #include "duckdb/common/types/selection_vector.hpp"
 
 namespace duckdb {
@@ -42,6 +44,12 @@ public:
 	virtual FilterPropagateResult CheckStatistics(BaseStatistics &stats) = 0;
 	virtual FilterPropagateResult CheckSketchStatistics(BaseStatistics &stats, idx_t index, std::vector<std::shared_ptr<BaseColumnSketch>> &segment_sketches,
 														std::vector<ManagedSelection> &vector_sels) = 0;
+	virtual FilterPropagateResult CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+													   std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+													   std::vector<ManagedSelection> &cubit_vector_sels) = 0;
+	virtual FilterPropagateResult CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+													   std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+													   std::vector<ManagedSelection> &rabit_vector_sels) = 0;
 	virtual string ToString(const string &column_name) = 0;
 	virtual bool Equals(const TableFilter &other) const {
 		return filter_type != other.filter_type;

@@ -17,6 +17,14 @@ bool ValidityColumnData::CheckSketch(ColumnScanState &state, TableFilter &filter
 	return true;
 }
 
+bool ValidityColumnData::CheckCubit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	return true;
+}
+
+bool ValidityColumnData::CheckRabit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	return true;
+}
+
 void ValidityColumnData::AppendData(BaseStatistics &stats, ColumnAppendState &state, UnifiedVectorFormat &vdata,
                                     idx_t count) {
 	lock_guard<mutex> l(stats_lock);

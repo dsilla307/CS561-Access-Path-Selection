@@ -28,6 +28,8 @@ public:
 	void SetStart(idx_t new_start) override;
 	bool CheckZonemap(ColumnScanState &state, TableFilter &filter) override;
 	bool CheckSketch(ColumnScanState &state, TableFilter &filter, idx_t index) override;
+	bool CheckCubit(ColumnScanState &state, TableFilter &filter, idx_t index) override;
+	bool CheckRabit(ColumnScanState &state, TableFilter &filter, idx_t index) override;
 
 	void InitializeScan(ColumnScanState &state) override;
 	void InitializeScanWithOffset(ColumnScanState &state, idx_t row_idx) override;

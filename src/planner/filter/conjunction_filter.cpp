@@ -35,6 +35,36 @@ FilterPropagateResult ConjunctionOrFilter::CheckSketchStatistics(BaseStatistics 
 	return FilterPropagateResult::FILTER_ALWAYS_FALSE;
 }
 
+FilterPropagateResult ConjunctionOrFilter::CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+																std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+																std::vector<ManagedSelection> &cubit_vector_sels) {
+	D_ASSERT(!child_filters.empty());
+	for (auto &filter : child_filters) {
+		auto prune_result = filter->CheckCubitStatistics(stats, index, cubit_indices, cubit_vector_sels);
+		if (prune_result == FilterPropagateResult::NO_PRUNING_POSSIBLE) {
+			return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+		} else if (prune_result == FilterPropagateResult::FILTER_ALWAYS_TRUE) {
+			return FilterPropagateResult::FILTER_ALWAYS_TRUE;
+		}
+	}
+	return FilterPropagateResult::FILTER_ALWAYS_FALSE;
+}
+
+FilterPropagateResult ConjunctionOrFilter::CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+																std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+																std::vector<ManagedSelection> &rabit_vector_sels) {
+	D_ASSERT(!child_filters.empty());
+	for (auto &filter : child_filters) {
+		auto prune_result = filter->CheckRabitStatistics(stats, index, rabit_indices, rabit_vector_sels);
+		if (prune_result == FilterPropagateResult::NO_PRUNING_POSSIBLE) {
+			return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+		} else if (prune_result == FilterPropagateResult::FILTER_ALWAYS_TRUE) {
+			return FilterPropagateResult::FILTER_ALWAYS_TRUE;
+		}
+	}
+	return FilterPropagateResult::FILTER_ALWAYS_FALSE;
+}
+
 string ConjunctionOrFilter::ToString(const string &column_name) {
 	string result;
 	for (idx_t i = 0; i < child_filters.size(); i++) {
@@ -108,6 +138,86 @@ FilterPropagateResult ConjunctionAndFilter::CheckSketchStatistics(BaseStatistics
 			i++;
 		}
 		
+		if (prune_result == FilterPropagateResult::FILTER_ALWAYS_FALSE) {
+			return FilterPropagateResult::FILTER_ALWAYS_FALSE;
+		} else if (prune_result != result) {
+			result = FilterPropagateResult::NO_PRUNING_POSSIBLE;
+		}
+	}
+
+	if (--i) {
+		msel.bitmask = merged_mask;
+		msel.BitmaskToSelection();
+	}
+
+	return result;
+}
+
+FilterPropagateResult ConjunctionAndFilter::CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+																 std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+																 std::vector<ManagedSelection> &cubit_vector_sels) {
+	D_ASSERT(!child_filters.empty());
+	auto result = FilterPropagateResult::FILTER_ALWAYS_TRUE;
+
+	int i = 0;
+	std::vector<uint64_t> merged_mask;
+	ManagedSelection &msel = cubit_vector_sels[index];
+
+	for (auto &filter : child_filters) {
+		auto prune_result = filter->CheckCubitStatistics(stats, index, cubit_indices, cubit_vector_sels);
+
+		if (filter->filter_type == TableFilterType::CONSTANT_COMPARISON) {
+			const auto &cur_mask = msel.bitmask;
+			if (i == 0) {
+				merged_mask = cur_mask;
+			} else {
+				for (size_t j = 0; j < merged_mask.size(); ++j) {
+					merged_mask[j] &= cur_mask[j];
+				}
+			}
+			i++;
+		}
+
+		if (prune_result == FilterPropagateResult::FILTER_ALWAYS_FALSE) {
+			return FilterPropagateResult::FILTER_ALWAYS_FALSE;
+		} else if (prune_result != result) {
+			result = FilterPropagateResult::NO_PRUNING_POSSIBLE;
+		}
+	}
+
+	if (--i) {
+		msel.bitmask = merged_mask;
+		msel.BitmaskToSelection();
+	}
+
+	return result;
+}
+
+FilterPropagateResult ConjunctionAndFilter::CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+																 std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+																 std::vector<ManagedSelection> &rabit_vector_sels) {
+	D_ASSERT(!child_filters.empty());
+	auto result = FilterPropagateResult::FILTER_ALWAYS_TRUE;
+
+	int i = 0;
+	std::vector<uint64_t> merged_mask;
+	ManagedSelection &msel = rabit_vector_sels[index];
+
+	for (auto &filter : child_filters) {
+		auto prune_result = filter->CheckRabitStatistics(stats, index, rabit_indices, rabit_vector_sels);
+
+		if (filter->filter_type == TableFilterType::CONSTANT_COMPARISON) {
+			const auto &cur_mask = msel.bitmask;
+			if (i == 0) {
+				merged_mask = cur_mask;
+			} else {
+				for (size_t j = 0; j < merged_mask.size(); ++j) {
+					merged_mask[j] &= cur_mask[j];
+				}
+			}
+			i++;
+		}
+
 		if (prune_result == FilterPropagateResult::FILTER_ALWAYS_FALSE) {
 			return FilterPropagateResult::FILTER_ALWAYS_FALSE;
 		} else if (prune_result != result) {

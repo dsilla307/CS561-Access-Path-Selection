@@ -34,6 +34,14 @@ bool ListColumnData::CheckSketch(ColumnScanState &state, TableFilter &filter, id
 	return false;
 }
 
+bool ListColumnData::CheckCubit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	return false;
+}
+
+bool ListColumnData::CheckRabit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	return false;
+}
+
 void ListColumnData::InitializeScan(ColumnScanState &state) {
 	ColumnData::InitializeScan(state);
 

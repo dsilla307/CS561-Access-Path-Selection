@@ -1,0 +1,501 @@
+column,selectivity,threshold,method,run,time_ms
+l_discount,9.09%,0.01,plain,1,122.000
+l_discount,9.09%,0.01,plain,2,106.000
+l_discount,9.09%,0.01,plain,3,110.000
+l_discount,9.09%,0.01,plain,4,110.000
+l_discount,9.09%,0.01,plain,5,114.000
+l_discount,27.3%,0.03,plain,1,111.000
+l_discount,27.3%,0.03,plain,2,111.000
+l_discount,27.3%,0.03,plain,3,109.000
+l_discount,27.3%,0.03,plain,4,108.000
+l_discount,27.3%,0.03,plain,5,111.000
+l_discount,45.5%,0.05,plain,1,118.000
+l_discount,45.5%,0.05,plain,2,114.000
+l_discount,45.5%,0.05,plain,3,107.000
+l_discount,45.5%,0.05,plain,4,110.000
+l_discount,45.5%,0.05,plain,5,107.000
+l_discount,63.6%,0.07,plain,1,107.000
+l_discount,63.6%,0.07,plain,2,111.000
+l_discount,63.6%,0.07,plain,3,106.000
+l_discount,63.6%,0.07,plain,4,123.000
+l_discount,63.6%,0.07,plain,5,114.000
+l_discount,81.8%,0.09,plain,1,113.000
+l_discount,81.8%,0.09,plain,2,110.000
+l_discount,81.8%,0.09,plain,3,116.000
+l_discount,81.8%,0.09,plain,4,116.000
+l_discount,81.8%,0.09,plain,5,107.000
+l_discount,9.09%,0.01,sketch,1,117.000
+l_discount,9.09%,0.01,sketch,2,111.000
+l_discount,9.09%,0.01,sketch,3,113.000
+l_discount,9.09%,0.01,sketch,4,127.000
+l_discount,9.09%,0.01,sketch,5,132.000
+l_discount,27.3%,0.03,sketch,1,134.000
+l_discount,27.3%,0.03,sketch,2,129.000
+l_discount,27.3%,0.03,sketch,3,113.000
+l_discount,27.3%,0.03,sketch,4,112.000
+l_discount,27.3%,0.03,sketch,5,110.000
+l_discount,45.5%,0.05,sketch,1,112.000
+l_discount,45.5%,0.05,sketch,2,111.000
+l_discount,45.5%,0.05,sketch,3,111.000
+l_discount,45.5%,0.05,sketch,4,110.000
+l_discount,45.5%,0.05,sketch,5,112.000
+l_discount,63.6%,0.07,sketch,1,111.000
+l_discount,63.6%,0.07,sketch,2,114.000
+l_discount,63.6%,0.07,sketch,3,112.000
+l_discount,63.6%,0.07,sketch,4,109.000
+l_discount,63.6%,0.07,sketch,5,111.000
+l_discount,81.8%,0.09,sketch,1,110.000
+l_discount,81.8%,0.09,sketch,2,110.000
+l_discount,81.8%,0.09,sketch,3,111.000
+l_discount,81.8%,0.09,sketch,4,111.000
+l_discount,81.8%,0.09,sketch,5,118.000
+l_discount,9.09%,0.01,cubit,1,131.000
+l_discount,9.09%,0.01,cubit,2,116.000
+l_discount,9.09%,0.01,cubit,3,116.000
+l_discount,9.09%,0.01,cubit,4,120.000
+l_discount,9.09%,0.01,cubit,5,115.000
+l_discount,27.3%,0.03,cubit,1,138.000
+l_discount,27.3%,0.03,cubit,2,108.000
+l_discount,27.3%,0.03,cubit,3,151.000
+l_discount,27.3%,0.03,cubit,4,152.000
+l_discount,27.3%,0.03,cubit,5,148.000
+l_discount,45.5%,0.05,cubit,1,141.000
+l_discount,45.5%,0.05,cubit,2,139.000
+l_discount,45.5%,0.05,cubit,3,152.000
+l_discount,45.5%,0.05,cubit,4,145.000
+l_discount,45.5%,0.05,cubit,5,113.000
+l_discount,63.6%,0.07,cubit,1,138.000
+l_discount,63.6%,0.07,cubit,2,135.000
+l_discount,63.6%,0.07,cubit,3,157.000
+l_discount,63.6%,0.07,cubit,4,146.000
+l_discount,63.6%,0.07,cubit,5,119.000
+l_discount,81.8%,0.09,cubit,1,127.000
+l_discount,81.8%,0.09,cubit,2,114.000
+l_discount,81.8%,0.09,cubit,3,109.000
+l_discount,81.8%,0.09,cubit,4,144.000
+l_discount,81.8%,0.09,cubit,5,154.000
+l_discount,9.09%,0.01,rabit,1,137.000
+l_discount,9.09%,0.01,rabit,2,118.000
+l_discount,9.09%,0.01,rabit,3,119.000
+l_discount,9.09%,0.01,rabit,4,120.000
+l_discount,9.09%,0.01,rabit,5,111.000
+l_discount,27.3%,0.03,rabit,1,118.000
+l_discount,27.3%,0.03,rabit,2,118.000
+l_discount,27.3%,0.03,rabit,3,118.000
+l_discount,27.3%,0.03,rabit,4,129.000
+l_discount,27.3%,0.03,rabit,5,123.000
+l_discount,45.5%,0.05,rabit,1,120.000
+l_discount,45.5%,0.05,rabit,2,111.000
+l_discount,45.5%,0.05,rabit,3,110.000
+l_discount,45.5%,0.05,rabit,4,110.000
+l_discount,45.5%,0.05,rabit,5,110.000
+l_discount,63.6%,0.07,rabit,1,112.000
+l_discount,63.6%,0.07,rabit,2,111.000
+l_discount,63.6%,0.07,rabit,3,110.000
+l_discount,63.6%,0.07,rabit,4,128.000
+l_discount,63.6%,0.07,rabit,5,109.000
+l_discount,81.8%,0.09,rabit,1,115.000
+l_discount,81.8%,0.09,rabit,2,124.000
+l_discount,81.8%,0.09,rabit,3,120.000
+l_discount,81.8%,0.09,rabit,4,132.000
+l_discount,81.8%,0.09,rabit,5,123.000
+l_extendedprice,12.9%,10000,plain,1,128.000
+l_extendedprice,12.9%,10000,plain,2,108.000
+l_extendedprice,12.9%,10000,plain,3,108.000
+l_extendedprice,12.9%,10000,plain,4,108.000
+l_extendedprice,12.9%,10000,plain,5,108.000
+l_extendedprice,33.7%,25000,plain,1,120.000
+l_extendedprice,33.7%,25000,plain,2,112.000
+l_extendedprice,33.7%,25000,plain,3,108.000
+l_extendedprice,33.7%,25000,plain,4,110.000
+l_extendedprice,33.7%,25000,plain,5,110.000
+l_extendedprice,68.4%,55000,plain,1,112.000
+l_extendedprice,68.4%,55000,plain,2,111.000
+l_extendedprice,68.4%,55000,plain,3,111.000
+l_extendedprice,68.4%,55000,plain,4,110.000
+l_extendedprice,68.4%,55000,plain,5,109.000
+l_extendedprice,92.6%,90000,plain,1,112.000
+l_extendedprice,92.6%,90000,plain,2,110.000
+l_extendedprice,92.6%,90000,plain,3,109.000
+l_extendedprice,92.6%,90000,plain,4,112.000
+l_extendedprice,92.6%,90000,plain,5,109.000
+l_extendedprice,99.9%,150000,plain,1,4.000
+l_extendedprice,99.9%,150000,plain,2,5.000
+l_extendedprice,99.9%,150000,plain,3,3.000
+l_extendedprice,99.9%,150000,plain,4,4.000
+l_extendedprice,99.9%,150000,plain,5,3.000
+l_extendedprice,12.9%,10000,sketch,1,158.000
+l_extendedprice,12.9%,10000,sketch,2,107.000
+l_extendedprice,12.9%,10000,sketch,3,109.000
+l_extendedprice,12.9%,10000,sketch,4,111.000
+l_extendedprice,12.9%,10000,sketch,5,114.000
+l_extendedprice,33.7%,25000,sketch,1,111.000
+l_extendedprice,33.7%,25000,sketch,2,110.000
+l_extendedprice,33.7%,25000,sketch,3,110.000
+l_extendedprice,33.7%,25000,sketch,4,108.000
+l_extendedprice,33.7%,25000,sketch,5,109.000
+l_extendedprice,68.4%,55000,sketch,1,109.000
+l_extendedprice,68.4%,55000,sketch,2,110.000
+l_extendedprice,68.4%,55000,sketch,3,110.000
+l_extendedprice,68.4%,55000,sketch,4,109.000
+l_extendedprice,68.4%,55000,sketch,5,108.000
+l_extendedprice,92.6%,90000,sketch,1,111.000
+l_extendedprice,92.6%,90000,sketch,2,110.000
+l_extendedprice,92.6%,90000,sketch,3,108.000
+l_extendedprice,92.6%,90000,sketch,4,109.000
+l_extendedprice,92.6%,90000,sketch,5,109.000
+l_extendedprice,99.9%,150000,sketch,1,5.000
+l_extendedprice,99.9%,150000,sketch,2,5.000
+l_extendedprice,99.9%,150000,sketch,3,4.000
+l_extendedprice,99.9%,150000,sketch,4,4.000
+l_extendedprice,99.9%,150000,sketch,5,3.000
+l_extendedprice,12.9%,10000,cubit,1,123.000
+l_extendedprice,12.9%,10000,cubit,2,112.000
+l_extendedprice,12.9%,10000,cubit,3,111.000
+l_extendedprice,12.9%,10000,cubit,4,113.000
+l_extendedprice,12.9%,10000,cubit,5,113.000
+l_extendedprice,33.7%,25000,cubit,1,111.000
+l_extendedprice,33.7%,25000,cubit,2,113.000
+l_extendedprice,33.7%,25000,cubit,3,119.000
+l_extendedprice,33.7%,25000,cubit,4,112.000
+l_extendedprice,33.7%,25000,cubit,5,111.000
+l_extendedprice,68.4%,55000,cubit,1,118.000
+l_extendedprice,68.4%,55000,cubit,2,115.000
+l_extendedprice,68.4%,55000,cubit,3,116.000
+l_extendedprice,68.4%,55000,cubit,4,112.000
+l_extendedprice,68.4%,55000,cubit,5,116.000
+l_extendedprice,92.6%,90000,cubit,1,116.000
+l_extendedprice,92.6%,90000,cubit,2,110.000
+l_extendedprice,92.6%,90000,cubit,3,116.000
+l_extendedprice,92.6%,90000,cubit,4,112.000
+l_extendedprice,92.6%,90000,cubit,5,113.000
+l_extendedprice,99.9%,150000,cubit,1,5.000
+l_extendedprice,99.9%,150000,cubit,2,6.000
+l_extendedprice,99.9%,150000,cubit,3,5.000
+l_extendedprice,99.9%,150000,cubit,4,3.000
+l_extendedprice,99.9%,150000,cubit,5,4.000
+l_extendedprice,12.9%,10000,rabit,1,130.000
+l_extendedprice,12.9%,10000,rabit,2,111.000
+l_extendedprice,12.9%,10000,rabit,3,115.000
+l_extendedprice,12.9%,10000,rabit,4,108.000
+l_extendedprice,12.9%,10000,rabit,5,112.000
+l_extendedprice,33.7%,25000,rabit,1,109.000
+l_extendedprice,33.7%,25000,rabit,2,109.000
+l_extendedprice,33.7%,25000,rabit,3,110.000
+l_extendedprice,33.7%,25000,rabit,4,110.000
+l_extendedprice,33.7%,25000,rabit,5,109.000
+l_extendedprice,68.4%,55000,rabit,1,110.000
+l_extendedprice,68.4%,55000,rabit,2,109.000
+l_extendedprice,68.4%,55000,rabit,3,110.000
+l_extendedprice,68.4%,55000,rabit,4,110.000
+l_extendedprice,68.4%,55000,rabit,5,108.000
+l_extendedprice,92.6%,90000,rabit,1,110.000
+l_extendedprice,92.6%,90000,rabit,2,109.000
+l_extendedprice,92.6%,90000,rabit,3,112.000
+l_extendedprice,92.6%,90000,rabit,4,114.000
+l_extendedprice,92.6%,90000,rabit,5,115.000
+l_extendedprice,99.9%,150000,rabit,1,6.000
+l_extendedprice,99.9%,150000,rabit,2,6.000
+l_extendedprice,99.9%,150000,rabit,3,6.000
+l_extendedprice,99.9%,150000,rabit,4,5.000
+l_extendedprice,99.9%,150000,rabit,5,4.000
+l_quantity,8.00%,5,plain,1,92.000
+l_quantity,8.00%,5,plain,2,91.000
+l_quantity,8.00%,5,plain,3,84.000
+l_quantity,8.00%,5,plain,4,84.000
+l_quantity,8.00%,5,plain,5,83.000
+l_quantity,18.0%,10,plain,1,85.000
+l_quantity,18.0%,10,plain,2,84.000
+l_quantity,18.0%,10,plain,3,83.000
+l_quantity,18.0%,10,plain,4,83.000
+l_quantity,18.0%,10,plain,5,85.000
+l_quantity,38.0%,20,plain,1,85.000
+l_quantity,38.0%,20,plain,2,83.000
+l_quantity,38.0%,20,plain,3,83.000
+l_quantity,38.0%,20,plain,4,85.000
+l_quantity,38.0%,20,plain,5,84.000
+l_quantity,58.0%,30,plain,1,85.000
+l_quantity,58.0%,30,plain,2,84.000
+l_quantity,58.0%,30,plain,3,83.000
+l_quantity,58.0%,30,plain,4,85.000
+l_quantity,58.0%,30,plain,5,85.000
+l_quantity,78.0%,40,plain,1,87.000
+l_quantity,78.0%,40,plain,2,84.000
+l_quantity,78.0%,40,plain,3,85.000
+l_quantity,78.0%,40,plain,4,84.000
+l_quantity,78.0%,40,plain,5,83.000
+l_quantity,8.00%,5,sketch,1,91.000
+l_quantity,8.00%,5,sketch,2,86.000
+l_quantity,8.00%,5,sketch,3,86.000
+l_quantity,8.00%,5,sketch,4,87.000
+l_quantity,8.00%,5,sketch,5,87.000
+l_quantity,18.0%,10,sketch,1,86.000
+l_quantity,18.0%,10,sketch,2,87.000
+l_quantity,18.0%,10,sketch,3,86.000
+l_quantity,18.0%,10,sketch,4,86.000
+l_quantity,18.0%,10,sketch,5,85.000
+l_quantity,38.0%,20,sketch,1,87.000
+l_quantity,38.0%,20,sketch,2,86.000
+l_quantity,38.0%,20,sketch,3,85.000
+l_quantity,38.0%,20,sketch,4,85.000
+l_quantity,38.0%,20,sketch,5,86.000
+l_quantity,58.0%,30,sketch,1,87.000
+l_quantity,58.0%,30,sketch,2,87.000
+l_quantity,58.0%,30,sketch,3,84.000
+l_quantity,58.0%,30,sketch,4,89.000
+l_quantity,58.0%,30,sketch,5,87.000
+l_quantity,78.0%,40,sketch,1,85.000
+l_quantity,78.0%,40,sketch,2,88.000
+l_quantity,78.0%,40,sketch,3,87.000
+l_quantity,78.0%,40,sketch,4,86.000
+l_quantity,78.0%,40,sketch,5,84.000
+l_quantity,8.00%,5,cubit,1,93.000
+l_quantity,8.00%,5,cubit,2,87.000
+l_quantity,8.00%,5,cubit,3,87.000
+l_quantity,8.00%,5,cubit,4,85.000
+l_quantity,8.00%,5,cubit,5,88.000
+l_quantity,18.0%,10,cubit,1,86.000
+l_quantity,18.0%,10,cubit,2,86.000
+l_quantity,18.0%,10,cubit,3,86.000
+l_quantity,18.0%,10,cubit,4,85.000
+l_quantity,18.0%,10,cubit,5,87.000
+l_quantity,38.0%,20,cubit,1,86.000
+l_quantity,38.0%,20,cubit,2,85.000
+l_quantity,38.0%,20,cubit,3,84.000
+l_quantity,38.0%,20,cubit,4,87.000
+l_quantity,38.0%,20,cubit,5,84.000
+l_quantity,58.0%,30,cubit,1,84.000
+l_quantity,58.0%,30,cubit,2,86.000
+l_quantity,58.0%,30,cubit,3,85.000
+l_quantity,58.0%,30,cubit,4,85.000
+l_quantity,58.0%,30,cubit,5,84.000
+l_quantity,78.0%,40,cubit,1,85.000
+l_quantity,78.0%,40,cubit,2,86.000
+l_quantity,78.0%,40,cubit,3,84.000
+l_quantity,78.0%,40,cubit,4,88.000
+l_quantity,78.0%,40,cubit,5,84.000
+l_quantity,8.00%,5,rabit,1,89.000
+l_quantity,8.00%,5,rabit,2,88.000
+l_quantity,8.00%,5,rabit,3,88.000
+l_quantity,8.00%,5,rabit,4,89.000
+l_quantity,8.00%,5,rabit,5,84.000
+l_quantity,18.0%,10,rabit,1,85.000
+l_quantity,18.0%,10,rabit,2,89.000
+l_quantity,18.0%,10,rabit,3,86.000
+l_quantity,18.0%,10,rabit,4,85.000
+l_quantity,18.0%,10,rabit,5,87.000
+l_quantity,38.0%,20,rabit,1,87.000
+l_quantity,38.0%,20,rabit,2,85.000
+l_quantity,38.0%,20,rabit,3,86.000
+l_quantity,38.0%,20,rabit,4,86.000
+l_quantity,38.0%,20,rabit,5,85.000
+l_quantity,58.0%,30,rabit,1,86.000
+l_quantity,58.0%,30,rabit,2,88.000
+l_quantity,58.0%,30,rabit,3,85.000
+l_quantity,58.0%,30,rabit,4,85.000
+l_quantity,58.0%,30,rabit,5,89.000
+l_quantity,78.0%,40,rabit,1,87.000
+l_quantity,78.0%,40,rabit,2,88.000
+l_quantity,78.0%,40,rabit,3,87.000
+l_quantity,78.0%,40,rabit,4,86.000
+l_quantity,78.0%,40,rabit,5,87.000
+l_shipdate,3.78%,date '1993-01-01',plain,1,26.000
+l_shipdate,3.78%,date '1993-01-01',plain,2,21.000
+l_shipdate,3.78%,date '1993-01-01',plain,3,22.000
+l_shipdate,3.78%,date '1993-01-01',plain,4,21.000
+l_shipdate,3.78%,date '1993-01-01',plain,5,21.000
+l_shipdate,12.7%,date '1993-08-01',plain,1,24.000
+l_shipdate,12.7%,date '1993-08-01',plain,2,24.000
+l_shipdate,12.7%,date '1993-08-01',plain,3,24.000
+l_shipdate,12.7%,date '1993-08-01',plain,4,23.000
+l_shipdate,12.7%,date '1993-08-01',plain,5,23.000
+l_shipdate,27.8%,date '1994-04-01',plain,1,25.000
+l_shipdate,27.8%,date '1994-04-01',plain,2,27.000
+l_shipdate,27.8%,date '1994-04-01',plain,3,27.000
+l_shipdate,27.8%,date '1994-04-01',plain,4,26.000
+l_shipdate,27.8%,date '1994-04-01',plain,5,25.000
+l_shipdate,43.0%,date '1995-01-01',plain,1,28.000
+l_shipdate,43.0%,date '1995-01-01',plain,2,27.000
+l_shipdate,43.0%,date '1995-01-01',plain,3,27.000
+l_shipdate,43.0%,date '1995-01-01',plain,4,27.000
+l_shipdate,43.0%,date '1995-01-01',plain,5,27.000
+l_shipdate,73.4%,date '1996-06-01',plain,1,27.000
+l_shipdate,73.4%,date '1996-06-01',plain,2,24.000
+l_shipdate,73.4%,date '1996-06-01',plain,3,26.000
+l_shipdate,73.4%,date '1996-06-01',plain,4,24.000
+l_shipdate,73.4%,date '1996-06-01',plain,5,25.000
+l_shipdate,3.78%,date '1993-01-01',sketch,1,88.000
+l_shipdate,3.78%,date '1993-01-01',sketch,2,25.000
+l_shipdate,3.78%,date '1993-01-01',sketch,3,23.000
+l_shipdate,3.78%,date '1993-01-01',sketch,4,22.000
+l_shipdate,3.78%,date '1993-01-01',sketch,5,23.000
+l_shipdate,12.7%,date '1993-08-01',sketch,1,25.000
+l_shipdate,12.7%,date '1993-08-01',sketch,2,24.000
+l_shipdate,12.7%,date '1993-08-01',sketch,3,25.000
+l_shipdate,12.7%,date '1993-08-01',sketch,4,24.000
+l_shipdate,12.7%,date '1993-08-01',sketch,5,26.000
+l_shipdate,27.8%,date '1994-04-01',sketch,1,29.000
+l_shipdate,27.8%,date '1994-04-01',sketch,2,27.000
+l_shipdate,27.8%,date '1994-04-01',sketch,3,26.000
+l_shipdate,27.8%,date '1994-04-01',sketch,4,26.000
+l_shipdate,27.8%,date '1994-04-01',sketch,5,28.000
+l_shipdate,43.0%,date '1995-01-01',sketch,1,29.000
+l_shipdate,43.0%,date '1995-01-01',sketch,2,31.000
+l_shipdate,43.0%,date '1995-01-01',sketch,3,31.000
+l_shipdate,43.0%,date '1995-01-01',sketch,4,29.000
+l_shipdate,43.0%,date '1995-01-01',sketch,5,28.000
+l_shipdate,73.4%,date '1996-06-01',sketch,1,29.000
+l_shipdate,73.4%,date '1996-06-01',sketch,2,29.000
+l_shipdate,73.4%,date '1996-06-01',sketch,3,31.000
+l_shipdate,73.4%,date '1996-06-01',sketch,4,28.000
+l_shipdate,73.4%,date '1996-06-01',sketch,5,29.000
+l_shipdate,3.78%,date '1993-01-01',cubit,1,107.000
+l_shipdate,3.78%,date '1993-01-01',cubit,2,34.000
+l_shipdate,3.78%,date '1993-01-01',cubit,3,36.000
+l_shipdate,3.78%,date '1993-01-01',cubit,4,34.000
+l_shipdate,3.78%,date '1993-01-01',cubit,5,34.000
+l_shipdate,12.7%,date '1993-08-01',cubit,1,40.000
+l_shipdate,12.7%,date '1993-08-01',cubit,2,38.000
+l_shipdate,12.7%,date '1993-08-01',cubit,3,40.000
+l_shipdate,12.7%,date '1993-08-01',cubit,4,38.000
+l_shipdate,12.7%,date '1993-08-01',cubit,5,39.000
+l_shipdate,27.8%,date '1994-04-01',cubit,1,43.000
+l_shipdate,27.8%,date '1994-04-01',cubit,2,43.000
+l_shipdate,27.8%,date '1994-04-01',cubit,3,43.000
+l_shipdate,27.8%,date '1994-04-01',cubit,4,43.000
+l_shipdate,27.8%,date '1994-04-01',cubit,5,43.000
+l_shipdate,43.0%,date '1995-01-01',cubit,1,48.000
+l_shipdate,43.0%,date '1995-01-01',cubit,2,46.000
+l_shipdate,43.0%,date '1995-01-01',cubit,3,47.000
+l_shipdate,43.0%,date '1995-01-01',cubit,4,46.000
+l_shipdate,43.0%,date '1995-01-01',cubit,5,46.000
+l_shipdate,73.4%,date '1996-06-01',cubit,1,56.000
+l_shipdate,73.4%,date '1996-06-01',cubit,2,52.000
+l_shipdate,73.4%,date '1996-06-01',cubit,3,51.000
+l_shipdate,73.4%,date '1996-06-01',cubit,4,52.000
+l_shipdate,73.4%,date '1996-06-01',cubit,5,55.000
+l_shipdate,3.78%,date '1993-01-01',rabit,1,108.000
+l_shipdate,3.78%,date '1993-01-01',rabit,2,33.000
+l_shipdate,3.78%,date '1993-01-01',rabit,3,32.000
+l_shipdate,3.78%,date '1993-01-01',rabit,4,32.000
+l_shipdate,3.78%,date '1993-01-01',rabit,5,30.000
+l_shipdate,12.7%,date '1993-08-01',rabit,1,33.000
+l_shipdate,12.7%,date '1993-08-01',rabit,2,32.000
+l_shipdate,12.7%,date '1993-08-01',rabit,3,32.000
+l_shipdate,12.7%,date '1993-08-01',rabit,4,32.000
+l_shipdate,12.7%,date '1993-08-01',rabit,5,33.000
+l_shipdate,27.8%,date '1994-04-01',rabit,1,34.000
+l_shipdate,27.8%,date '1994-04-01',rabit,2,33.000
+l_shipdate,27.8%,date '1994-04-01',rabit,3,34.000
+l_shipdate,27.8%,date '1994-04-01',rabit,4,33.000
+l_shipdate,27.8%,date '1994-04-01',rabit,5,32.000
+l_shipdate,43.0%,date '1995-01-01',rabit,1,35.000
+l_shipdate,43.0%,date '1995-01-01',rabit,2,34.000
+l_shipdate,43.0%,date '1995-01-01',rabit,3,34.000
+l_shipdate,43.0%,date '1995-01-01',rabit,4,32.000
+l_shipdate,43.0%,date '1995-01-01',rabit,5,33.000
+l_shipdate,73.4%,date '1996-06-01',rabit,1,37.000
+l_shipdate,73.4%,date '1996-06-01',rabit,2,35.000
+l_shipdate,73.4%,date '1996-06-01',rabit,3,36.000
+l_shipdate,73.4%,date '1996-06-01',rabit,4,36.000
+l_shipdate,73.4%,date '1996-06-01',rabit,5,37.000
+l_tax,11.1%,0.01,plain,1,115.000
+l_tax,11.1%,0.01,plain,2,112.000
+l_tax,11.1%,0.01,plain,3,112.000
+l_tax,11.1%,0.01,plain,4,113.000
+l_tax,11.1%,0.01,plain,5,112.000
+l_tax,22.2%,0.02,plain,1,115.000
+l_tax,22.2%,0.02,plain,2,112.000
+l_tax,22.2%,0.02,plain,3,112.000
+l_tax,22.2%,0.02,plain,4,111.000
+l_tax,22.2%,0.02,plain,5,113.000
+l_tax,44.4%,0.04,plain,1,115.000
+l_tax,44.4%,0.04,plain,2,110.000
+l_tax,44.4%,0.04,plain,3,112.000
+l_tax,44.4%,0.04,plain,4,109.000
+l_tax,44.4%,0.04,plain,5,113.000
+l_tax,66.7%,0.06,plain,1,111.000
+l_tax,66.7%,0.06,plain,2,115.000
+l_tax,66.7%,0.06,plain,3,108.000
+l_tax,66.7%,0.06,plain,4,112.000
+l_tax,66.7%,0.06,plain,5,113.000
+l_tax,88.9%,0.08,plain,1,111.000
+l_tax,88.9%,0.08,plain,2,111.000
+l_tax,88.9%,0.08,plain,3,112.000
+l_tax,88.9%,0.08,plain,4,111.000
+l_tax,88.9%,0.08,plain,5,109.000
+l_tax,11.1%,0.01,sketch,1,116.000
+l_tax,11.1%,0.01,sketch,2,110.000
+l_tax,11.1%,0.01,sketch,3,110.000
+l_tax,11.1%,0.01,sketch,4,110.000
+l_tax,11.1%,0.01,sketch,5,109.000
+l_tax,22.2%,0.02,sketch,1,112.000
+l_tax,22.2%,0.02,sketch,2,112.000
+l_tax,22.2%,0.02,sketch,3,110.000
+l_tax,22.2%,0.02,sketch,4,110.000
+l_tax,22.2%,0.02,sketch,5,110.000
+l_tax,44.4%,0.04,sketch,1,110.000
+l_tax,44.4%,0.04,sketch,2,114.000
+l_tax,44.4%,0.04,sketch,3,108.000
+l_tax,44.4%,0.04,sketch,4,110.000
+l_tax,44.4%,0.04,sketch,5,112.000
+l_tax,66.7%,0.06,sketch,1,113.000
+l_tax,66.7%,0.06,sketch,2,111.000
+l_tax,66.7%,0.06,sketch,3,107.000
+l_tax,66.7%,0.06,sketch,4,112.000
+l_tax,66.7%,0.06,sketch,5,115.000
+l_tax,88.9%,0.08,sketch,1,109.000
+l_tax,88.9%,0.08,sketch,2,110.000
+l_tax,88.9%,0.08,sketch,3,109.000
+l_tax,88.9%,0.08,sketch,4,110.000
+l_tax,88.9%,0.08,sketch,5,110.000
+l_tax,11.1%,0.01,cubit,1,131.000
+l_tax,11.1%,0.01,cubit,2,109.000
+l_tax,11.1%,0.01,cubit,3,110.000
+l_tax,11.1%,0.01,cubit,4,110.000
+l_tax,11.1%,0.01,cubit,5,110.000
+l_tax,22.2%,0.02,cubit,1,109.000
+l_tax,22.2%,0.02,cubit,2,110.000
+l_tax,22.2%,0.02,cubit,3,109.000
+l_tax,22.2%,0.02,cubit,4,108.000
+l_tax,22.2%,0.02,cubit,5,110.000
+l_tax,44.4%,0.04,cubit,1,109.000
+l_tax,44.4%,0.04,cubit,2,109.000
+l_tax,44.4%,0.04,cubit,3,109.000
+l_tax,44.4%,0.04,cubit,4,111.000
+l_tax,44.4%,0.04,cubit,5,111.000
+l_tax,66.7%,0.06,cubit,1,107.000
+l_tax,66.7%,0.06,cubit,2,109.000
+l_tax,66.7%,0.06,cubit,3,108.000
+l_tax,66.7%,0.06,cubit,4,109.000
+l_tax,66.7%,0.06,cubit,5,110.000
+l_tax,88.9%,0.08,cubit,1,107.000
+l_tax,88.9%,0.08,cubit,2,110.000
+l_tax,88.9%,0.08,cubit,3,109.000
+l_tax,88.9%,0.08,cubit,4,109.000
+l_tax,88.9%,0.08,cubit,5,108.000
+l_tax,11.1%,0.01,rabit,1,117.000
+l_tax,11.1%,0.01,rabit,2,110.000
+l_tax,11.1%,0.01,rabit,3,110.000
+l_tax,11.1%,0.01,rabit,4,110.000
+l_tax,11.1%,0.01,rabit,5,113.000
+l_tax,22.2%,0.02,rabit,1,113.000
+l_tax,22.2%,0.02,rabit,2,108.000
+l_tax,22.2%,0.02,rabit,3,109.000
+l_tax,22.2%,0.02,rabit,4,114.000
+l_tax,22.2%,0.02,rabit,5,113.000
+l_tax,44.4%,0.04,rabit,1,114.000
+l_tax,44.4%,0.04,rabit,2,112.000
+l_tax,44.4%,0.04,rabit,3,111.000
+l_tax,44.4%,0.04,rabit,4,111.000
+l_tax,44.4%,0.04,rabit,5,114.000
+l_tax,66.7%,0.06,rabit,1,112.000
+l_tax,66.7%,0.06,rabit,2,112.000
+l_tax,66.7%,0.06,rabit,3,114.000
+l_tax,66.7%,0.06,rabit,4,116.000
+l_tax,66.7%,0.06,rabit,5,110.000
+l_tax,88.9%,0.08,rabit,1,116.000
+l_tax,88.9%,0.08,rabit,2,116.000
+l_tax,88.9%,0.08,rabit,3,108.000
+l_tax,88.9%,0.08,rabit,4,108.000
+l_tax,88.9%,0.08,rabit,5,121.000

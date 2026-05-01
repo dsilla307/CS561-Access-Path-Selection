@@ -68,6 +68,14 @@ bool StructColumnData::CheckSketch(ColumnScanState &state, TableFilter &filter, 
 	return false;
 }
 
+bool StructColumnData::CheckCubit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	return false;
+}
+
+bool StructColumnData::CheckRabit(ColumnScanState &state, TableFilter &filter, idx_t index) {
+	return false;
+}
+
 idx_t StructColumnData::GetMaxEntry() {
 	return sub_columns[0]->GetMaxEntry();
 }

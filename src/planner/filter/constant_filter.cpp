@@ -1,5 +1,6 @@
 #include "duckdb/planner/filter/constant_filter.hpp"
 #include "duckdb/storage/statistics/base_statistics.hpp"
+#include "duckdb/storage/statistics/numeric_stats.hpp"
 
 namespace duckdb {
 
@@ -41,6 +42,36 @@ FilterPropagateResult ConstantFilter::CheckSketchStatistics(BaseStatistics &stat
 	case PhysicalType::INT32:
 	case PhysicalType::INT64:
 		return NumericStats::CheckSketch(stats, comparison_type, constant, index, segment_sketches, vector_sels);
+	default:
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
+}
+
+FilterPropagateResult ConstantFilter::CheckCubitStatistics(BaseStatistics &stats, idx_t index,
+													   std::vector<std::shared_ptr<BaseCubitIndex>> &cubit_indices,
+													   std::vector<ManagedSelection> &cubit_vector_sels) {
+	D_ASSERT(constant.type().id() == stats.GetType().id());
+	switch (constant.type().InternalType()) {
+	case PhysicalType::UINT32:
+	case PhysicalType::UINT64:
+	case PhysicalType::INT32:
+	case PhysicalType::INT64:
+		return NumericStats::CheckCubit(stats, comparison_type, constant, index, cubit_indices, cubit_vector_sels);
+	default:
+		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
+	}
+}
+
+FilterPropagateResult ConstantFilter::CheckRabitStatistics(BaseStatistics &stats, idx_t index,
+													   std::vector<std::shared_ptr<BaseRabitIndex>> &rabit_indices,
+													   std::vector<ManagedSelection> &rabit_vector_sels) {
+	D_ASSERT(constant.type().id() == stats.GetType().id());
+	switch (constant.type().InternalType()) {
+	case PhysicalType::UINT32:
+	case PhysicalType::UINT64:
+	case PhysicalType::INT32:
+	case PhysicalType::INT64:
+		return NumericStats::CheckRabit(stats, comparison_type, constant, index, rabit_indices, rabit_vector_sels);
 	default:
 		return FilterPropagateResult::NO_PRUNING_POSSIBLE;
 	}
